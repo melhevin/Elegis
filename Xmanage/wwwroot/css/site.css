@@ -1,0 +1,128 @@
+﻿h1, h2, h3, h4, h5, h6, label, p, pre, input, button, a, textarea {
+    font-family: 'Franklin Gothic ATF';
+    color: #343a40;
+}
+
+#Grid {
+    font-family: 'Franklin Gothic ATF';
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+body {
+    /*background: #EDEDED;*/
+    background: #fff;
+    margin-bottom: 60px;
+    width: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    Vertically center the text there
+}
+
+/*================================================================*/
+.loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffff; /*#cecece*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*login*/
+.icon_login {
+    background: url('/lib/icons/person.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: grid;
+}
+
+div.login-logout-tab div.card-header {
+    padding: 0px 0px 12px 0px;
+}
+
+div.login-logout-tab ul.nav-tabs {
+    margin: 0px 0px -12px 0px;
+}
+
+div.login-logout-tab li.nav-item {
+    width: 50%;
+}
+
+div.login-logout-tab li.nav-link {
+    font-size: 25px;
+    color: #495057;
+    text-align: center;
+}
+/*login form*/
+div.login-form-icon {
+    text-align: center;
+}
+
+
+.nav {
+    font-size: 18px;
+}
+
+.navbar {
+    background-color: #16140F;
+    /*   border-bottom: 4px solid;*/
+    color: #ffffff;
+}
+
+.nav.navbar-nav.link-hover li a {
+    color: white;
+}
+
+    .nav.navbar-nav.link-hover li a:hover {
+        color: white;
+    }
+
+.navbar .navbar-nav .nav-link {
+    color: #ffffff;
+    position: relative;
+    height: 50px;
+}
+
+.paddingHome2 {
+    padding-top: 10em;
+}
+
+.paddingHome1 {
+    padding-top: 3em;
+}
+
+.padding2em {
+    padding-top: 2em;
+}
+
+.spaceRight1em {
+    margin-right: 1em;
+}
+
+.icon_house_white {
+    background: url('/lib/bootstrap-4.3.1-dist/bootstrap-icons/house_white.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    display: grid;
+}
+

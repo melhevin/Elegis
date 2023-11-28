@@ -1,0 +1,9 @@
+﻿@model Xmanage.ContextModels.Priority
+@(Html.Kendo().DropDownListFor(m => m)
+            .DataValueField("Id")
+            .DataTextField("NameSurname")
+            .DataSource(d => d
+        .Read(r => r.Url("api/apihome/apichecklist/FkGetUser").Data("additionalDataGridWorkers"))
+        
+    )
+)

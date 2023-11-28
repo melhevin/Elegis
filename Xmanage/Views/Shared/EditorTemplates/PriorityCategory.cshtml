@@ -1,0 +1,8 @@
+﻿@model Xmanage.ContextModels.Priority
+@(Html.Kendo().DropDownListFor(m => m)
+            .DataValueField("Id")
+            .DataTextField("Describe")
+            .DataSource(d => d
+        .Read(r => r.Action("FkGetPriority", "Home"))
+    )
+)

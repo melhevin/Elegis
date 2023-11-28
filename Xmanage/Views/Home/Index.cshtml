@@ -1,0 +1,289 @@
+﻿@using Xmanage.ContextModels
+@using Xmanage.Models.HomeMethods
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    @*     <script src="~/lib/telerik.ui.for.aspnetmvc.2021.2.511.commercial/js/cultures/kendo.culture.en-us.min.js"></script>
+    <script src="~/lib/telerik.ui.for.aspnetmvc.2021.2.511.commercial/js/messages/kendo.messages.en-us.min.js"></script> *@
+</head>
+
+
+<body>
+
+    @(Html.Kendo().Grid<UsersMethosds.UsersGrid>()
+        .Name("GridUsers")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.Id)
+            .Hidden(true);
+            columns.Bound(c => c.Name)
+            .Title("Jméno");
+            columns.Bound(c => c.Surname)
+            .Title("Příjmení");
+            columns.Bound(c => c.Checked)
+            .Title("Login");
+            columns.Command(command => { command.Edit().Text("Upravit"); });
+        })
+        .Events(ev => ev.Save("onDataBoundGridUsers"))
+        .Scrollable(s => s.Virtual(true).Height("auto"))
+        .ToolBar(toolbar => toolbar.Create().Text("Vytvoř uživatele"))
+        .Editable(editable => { editable.Mode(GridEditMode.InLine); editable.DisplayDeleteConfirmation("Smazat"); })
+        .DataSource(dataSource => dataSource
+        .WebApi()
+        .PageSize(5)
+        .Model(model =>
+        {
+            model.Id(p => p.Id);
+        })
+        //.Read(read => read.Action("ReadUsers", "Home"))
+        .Read(read => read.Url("api/apihome/apiusers/ReadUsers"))
+        .Create(create => create.Url("api/apihome/apiusers/CreateUser").Type(HttpVerbs.Post))
+        .Update(update => update.Url("api/apihome/apiusers/UpdateUser").Type(HttpVerbs.Post))
+        )
+        )
+
+    @(Html.Kendo().Grid<LabourMethods.LabourGrid>()
+        .Name("GridLabour")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.Id)
+            .Hidden(true);
+            columns.Bound(c => c.Company)
+            .Title("Společnost");
+            columns.Bound(c => c.Describe)
+            .Title("Popis");
+            columns.ForeignKey(c => c.IdUser, p => p.Read(r => r.Url("api/apihome/apilabour/FkGetUser")), "Id", "NameSurname").Title("Zadavatel");
+            columns.Bound(c => c.DateCreate).Format("{0:dd.MM.yyyy HH:mm:ss}")
+            .Title("Vytvořeno");
+            columns.Bound(c => c.DateDeadline).Format("{0:dd.MM.yyyy HH:mm:ss}")
+            .Title("Deadline");
+            columns.ForeignKey(c => c.IdPriority, p => p.Read(r => r.Url("api/apihome/apilabour/FkGetPriority")), "Id", "Describe").Title("Priorita");
+            columns.ForeignKey(c => c.IdStatus, p => p.Read(r => r.Url("api/apihome/apilabour/FkGetStatus")), "Id", "Describe").Title("Status");
+            columns.Command(command => { command.Edit().Text("Ulož"); });
+        })
+        .Scrollable(s => s.Virtual(true).Height("auto"))
+        .Filterable()
+        .ToolBar(toolbar => { 
+            toolbar.Custom().Text("Vytvoř úkol").HtmlAttributes(new { onClick = "AddLabour()" });
+        })
+    .Editable(editable => { editable.Mode(GridEditMode.InLine); editable.DisplayDeleteConfirmation("Smazat"); })
+    .DataSource(dataSource => dataSource
+    .WebApi()
+    .PageSize(10)
+    
+
+    .Model(model =>
+    {
+        model.Id(p => p.Id);
+    })
+    .Read(read => read.Url("api/apihome/apilabour/ReadLabour"))
+    )
+    )
+
+
+    <div class="modal fade" id="AddLabour" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl modal_style">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal" onclick="ModalClose();">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <form id="form" autocomplete="off">
+                        <fieldset>
+                            <div>
+                                <label id="IdLabour" ></label>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    Společnost:
+                                    <input type="text" id="LabourCompany" />
+                                </div>
+                                <div class="row">
+                                    Popis:
+                                    <input type="text" id="LabourDescribe" />
+                                </div>
+                                <div class="row">
+                                    Datum dokončení:
+                                    @(Html.Kendo().DatePicker()
+                                        .Name("DateDeadline")
+                                        .Value(DateTime.Now)
+                                        )
+                                </div>
+                                <div class="row">
+                                    Priorita:
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("Priorita")
+                                        .DataTextField("Describe")
+                                        .DataValueField("Id")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Url("api/apihome/apilabour/FkGetPriority");
+                                            });
+                                        })
+                                        )
+                                </div>
+                                <div class="row">
+                                    Status:
+                                    @(Html.Kendo().DropDownList()
+                                        .Name("Status")
+                                        .DataTextField("Describe")
+                                        .DataValueField("Id")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Url("api/apihome/apilabour/FkGetStatus");
+                                            });
+                                        })
+                                        )
+                                </div>
+                                <div class="row">
+                                    @(
+                                        Html.Kendo().Grid<UsersMethosds.UsersGrid>()
+                                        .Name("GridUsers2")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(c => c.Id)
+                                            .Hidden(true);
+                                            columns.Bound(c => c.Name)
+                                            .Title("Jméno");
+                                            columns.Bound(c => c.Surname)
+                                            .Title("Příjmení");
+                                            columns.Command(command => command.Custom("Přidat").Click("AddWorker"));
+                                        })
+                                        .Scrollable(s => s.Virtual(true).Height("auto"))
+                                        .DataSource(dataSource => dataSource
+                                        .WebApi()
+                                        .PageSize(15)
+                                        .Model(model =>
+                                        {
+                                            model.Id(p => p.Id);
+                                        })
+                                        .Read(read => read.Url("api/apihome/apiusers/ReadUsers"))
+                                        )
+                                        )
+                                </div>
+                                <div class="row">
+                                    @(Html.Kendo().Grid<WorkersMethods.WrokersGrid>()
+                                        .Name("GridWorkers")
+                                        .Columns(columns =>
+                                        {
+                                        columns.Bound(c => c.Id)
+                                        .Hidden(true);
+                                        columns.ForeignKey(c => c.IdUser, p => p.Read(r => r.Url("api/apihome/apilabour/FkGetUser")), "Id", "NameSurname").Title("Řešitel");
+                                        columns.Command(command => { command.Custom("Delete").Click("DeleteWorker"); });
+                                        })
+                                        .Scrollable(s => s.Virtual(true).Height("auto"))
+                                        .Editable(editable => { editable.Mode(GridEditMode.InLine); editable.DisplayDeleteConfirmation("Smazat"); })
+                                        .DataSource(dataSource => dataSource
+                                        .WebApi()
+                                        .PageSize(15)
+                                        .Model(model =>
+                                        {
+                                        model.Id(p => p.Id);
+                                        })
+                                        .Read(read => read.Url("api/apihome/apiworkers/ReadWorkers").Data("additionalDataGridWorkers"))
+                                        //.Destroy(destroy => destroy.Url("api/apihome/apiworkers/DeleteWorkers").Data("additionalDataGridWorkers"))
+                                        )
+                                        )
+
+                                </div>
+                                <div class="row">
+                                    @(Html.Kendo().Grid<CheckListMethods.CheckListGrid>()
+                                        .Name("GridCheckList")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(c => c.Id)
+                                            .Hidden(true);
+                                            columns.Bound(c => c.Describe)
+                                            .Title("Popis");
+                                            columns.Bound(c => c.DateCreate).Format("{0:dd.MM.yyyy HH:mm:ss}")
+                                            .Title("Vytvořeno");
+                                            columns.Bound(c => c.DateDeadline).Format("{0:dd.MM.yyyy HH:mm:ss}")
+                                            .Title("Deadline");
+                                            //columns.ForeignKey(c => c.IdUser, p => p.Read(r => r.Url("api/apihome/apichecklist/FkGetUser").Data("additionalDataGridWorkers")), "Id", "Name").Title("Řešitel").ClientTemplate("#=concatenateNames(data)#");
+                                            columns.Bound(p => p.IdUser).ClientTemplate("#=showUser(data)#").EditorTemplateName("UsersForChecklistCategory").Title("Řešitel");
+                                            columns.ForeignKey(c => c.IdPriority, p => p.Read(r => r.Url("api/apihome/apilabour/FkGetPriority")), "Id", "Describe").Title("Priorita");
+                                            columns.ForeignKey(c => c.IdStatus, p => p.Read(r => r.Url("api/apihome/apilabour/FkGetStatus")), "Id", "Describe").Title("Status");
+                                            columns.Command(command => { command.Edit().Text("Upravit"); command.Destroy().Text("Smazat"); });
+                                        })
+                                        .ToolBar(toolbar => toolbar.Create().Text("Přidat úkol"))
+                                        .Scrollable(s => s.Virtual(true).Height("auto"))
+                                        .Editable(editable => { editable.Mode(GridEditMode.InLine); editable.DisplayDeleteConfirmation("Smazat"); })
+                                        .DataSource(dataSource => dataSource
+                                        .WebApi()
+                                        .PageSize(15)
+                                        .Model(model =>
+                                        {
+                                            model.Id(p => p.Id);
+                                        })
+                                        .Read(read => read.Url("api/apihome/apichecklist/ReadCheckList").Data("additionalDataGridWorkers"))
+                                        .Create(update => update.Url("api/apihome/apichecklist/CreateCheckList").Data("additionalDataGridWorkers"))
+                                        .Update(update => update.Url("api/apihome/apichecklist/UpdateCheckList").Data("additionalDataGridWorkers"))
+                                        .Destroy(destroy => destroy.Url("api/apihome/apichecklist/DeleteCheckList").Data("RowIdGridChecklist"))
+                                        )
+                                        )
+                                </div>
+                                <input type="button" value="Uložit" onclick="Save()" />
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    function showPriority(data) {
+        var jsonObj = @Html.Raw(Json.Serialize(ViewBag.Priority));
+        var priority;
+        for (let i = 0; i < jsonObj.length; i++) {
+            if (jsonObj[i].Id == data.IdPrioroty) {
+                priority = jsonObj[i].Descript;
+            }
+        }
+        return priority;
+    }
+    function showStatus(data) {
+        var jsonObj = @Html.Raw(Json.Serialize(ViewBag.Status));
+        var status;
+        for (let i = 0; i < jsonObj.length; i++) {
+            if (jsonObj[i].Id == data.IdStatus) {
+                status = jsonObj[i].Descript;
+            }
+        }
+        return status;
+    }
+    function showUser(data) {
+        var jsonObj = @Html.Raw(Json.Serialize(ViewBag.Users));
+        var dest = "a";
+        for (let i = 0; i < jsonObj.length; i++) {
+            if (jsonObj[i].Id == data.IdUser) {
+                dest = jsonObj[i].NameSurname;
+            }
+        }
+        return dest;
+    }
+    // function concatenateNames(data) {
+    //     var fullname;
+    //     $.ajax({
+    //         async: false,
+    //         type: "Post",
+    //         url: "/api/apihome/apilabour/GetUser",
+    //         dataType: "json",
+    //         data: { id: data.IdUser },
+    //         success: function (result) {
+    //             fullname = result.Name + ' ' + result.Surname;
+    //         },
+    //     })
+    //     return fullname;
+    // }
+</script>
+<script src="~/js/home.js" asp-append-version="true"></script>
+<script src="~/js/home/Users.js" asp-append-version="true"></script>
+<script src="~/js/home/Workers.js" asp-append-version="true"></script>
+<script src="~/js/home/CheckList.js" asp-append-version="true"></script>

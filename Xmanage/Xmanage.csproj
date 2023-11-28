@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\CODEOWNERS" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\CONTRIBUTING.md" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\dependabot.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\ISSUE_TEMPLATE\bug_report.md" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\ISSUE_TEMPLATE\config.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\ISSUE_TEMPLATE\feature_request.md" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\release-drafter.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\SUPPORT.md" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\browserstack.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\bundlewatch.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\codeql.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\css.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\docs.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\js.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\lint.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\node-sass.yml" />
+    <None Include="wwwroot\lib\bootstrap-5.0.2\.github\workflows\release-notes.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.25" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.25" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.25" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.25" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.25">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2021.3.1207" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
